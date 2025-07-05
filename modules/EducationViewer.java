@@ -1,62 +1,76 @@
 package modules;
 
 import db.DBConnection;
-
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
 public class EducationViewer extends JFrame {
-    private DefaultListModel<String> eduListModel;
-    private JList<String> eduList;
+    private DefaultListModel<String> educationListModel;
+    private JList<String> educationList;
 
+    // Default constructor – shows all education entries
     public EducationViewer() {
-        setTitle("Educational Institutions");
-        setSize(550, 400);
+        this("All");
+    }
+
+    // City-specific constructor – filters by city
+    public EducationViewer(String city) {
+        setTitle("Educational Institutions" + (city.equals("All") ? "" : " in " + city));
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        JLabel title = new JLabel("Education Information", SwingConstants.CENTER);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        add(title, BorderLayout.NORTH);
+        JLabel heading = new JLabel("Education Info" + (city.equals("All") ? "" : " - " + city), SwingConstants.CENTER);
+        heading.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        add(heading, BorderLayout.NORTH);
 
-        eduListModel = new DefaultListModel<>();
-        eduList = new JList<>(eduListModel);
-        eduList.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        JScrollPane scrollPane = new JScrollPane(eduList);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Institutions"));
+        educationListModel = new DefaultListModel<>();
+        educationList = new JList<>(educationListModel);
+        educationList.setFont(new Font("Monospaced", Font.PLAIN, 14));
+
+        JScrollPane scrollPane = new JScrollPane(educationList);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("List of Institutions"));
         add(scrollPane, BorderLayout.CENTER);
 
-        loadEducationData();
-
+        loadEducation(city);
         setVisible(true);
     }
 
-    private void loadEducationData() {
-        eduListModel.clear();
-        try (Connection conn = DBConnection.getConnection()) {
-            String sql = "SELECT name, type, address, city FROM education";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+    private void loadEducation(String city) {
+        educationListModel.clear();
 
+        try (Connection conn = DBConnection.getConnection()) {
+            String query;
+            PreparedStatement stmt;
+
+            if (city.equals("All")) {
+                query = "SELECT name, type, address, city FROM education";
+                stmt = conn.prepareStatement(query);
+            } else {
+                query = "SELECT name, type, address, city FROM education WHERE city = ?";
+                stmt = conn.prepareStatement(query);
+                stmt.setString(1, city);
+            }
+
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String info = String.format(
-                        "Name: %s | Type: %s | City: %s\n  Address: %s\n",
+                String edu = String.format("Name: %s | Type: %s | City: %s\n  Address: %s\n",
                         rs.getString("name"),
                         rs.getString("type"),
                         rs.getString("city"),
-                        rs.getString("address")
-                );
-                eduListModel.addElement(info);
+                        rs.getString("address"));
+                educationListModel.addElement(edu);
             }
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading education data: " + e.getMessage());
         }
     }
 
+    // Test main
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EducationViewer());
+        SwingUtilities.invokeLater(() -> new EducationViewer("Hyderabad"));
     }
 }

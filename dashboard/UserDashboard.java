@@ -1,48 +1,74 @@
 package dashboard;
 
 import modules.*;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class UserDashboard extends JFrame {
+    private String username;
+    private JComboBox<String> cityCombo;
 
     public UserDashboard(String username) {
-        setTitle("User Dashboard");
+        this.username = username;
+        setTitle("User Dashboard - " + username);
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        setLayout(new BorderLayout());
+        // Title
+        JLabel title = new JLabel("Welcome, " + username + "!", SwingConstants.CENTER);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 24));
 
-        JLabel welcomeLabel = new JLabel("Welcome, " + username, SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(0, 153, 76));
+        // City Selection
+        JLabel cityLabel = new JLabel("Select City:");
+        String[] cities = {"Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai"};
+        cityCombo = new JComboBox<>(cities);
 
-        JPanel btnPanel = new JPanel(new GridLayout(0, 2, 20, 20));
-        btnPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        JPanel topPanel = new JPanel(new FlowLayout());
+        topPanel.add(cityLabel);
+        topPanel.add(cityCombo);
 
-        String[] modules = { "Hotels", "Education", "Hostels", "ATMs", "Restaurants", "Hospitals" };
-        for (String name : modules) {
-            JButton button = new JButton("View " + name);
-            button.addActionListener(e -> openModule(name));
-            btnPanel.add(button);
-        }
+        // Module Buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 2, 15, 15));
+        JButton btnHotels = new JButton("View Hotels");
+        JButton btnHospitals = new JButton("View Hospitals");
+        JButton btnHostels = new JButton("View Hostels");
+        JButton btnEducation = new JButton("View Education");
+        JButton btnRestaurants = new JButton("View Restaurants");
+        JButton btnATMs = new JButton("View ATMs");
 
-        add(welcomeLabel, BorderLayout.NORTH);
-        add(btnPanel, BorderLayout.CENTER);
+        // Add buttons
+        buttonPanel.add(btnHotels);
+        buttonPanel.add(btnHospitals);
+        buttonPanel.add(btnHostels);
+        buttonPanel.add(btnEducation);
+        buttonPanel.add(btnRestaurants);
+        buttonPanel.add(btnATMs);
+
+        // Action Listeners
+        btnHotels.addActionListener(e -> new HotelsViewer(getSelectedCity()));
+        btnHospitals.addActionListener(e -> new HospitalsViewer(getSelectedCity()));
+        btnHostels.addActionListener(e -> new HostelsViewer(getSelectedCity()));
+        btnEducation.addActionListener(e -> new EducationViewer(getSelectedCity()));
+        btnRestaurants.addActionListener(e -> new RestaurantsViewer(getSelectedCity()));
+        btnATMs.addActionListener(e -> new ATMsViewer(getSelectedCity()));
+
+        // Main Layout
+        setLayout(new BorderLayout(10, 10));
+        add(title, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
-    private void openModule(String name) {
-        switch (name.toLowerCase()) {
-            case "hotels": new HotelsViewer(); break;
-            case "education": new EducationViewer(); break;
-            case "hostels": new HostelsViewer(); break;
-            case "atms": new ATMsViewer(); break;
-            case "restaurants": new RestaurantsViewer(); break;
-            case "hospitals": new HospitalsViewer(); break;
-            default: JOptionPane.showMessageDialog(this, "Module not found!");
-        }
+    private String getSelectedCity() {
+        return (String) cityCombo.getSelectedItem();
+    }
+
+    // Optional: For testing
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new UserDashboard("TestUser"));
     }
 }

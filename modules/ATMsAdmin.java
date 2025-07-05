@@ -68,7 +68,7 @@ public class ATMsAdmin extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) addATM();
         else if (e.getSource() == deleteButton) deleteATM();
-        else if (e.getSource() == viewButton) new ATMsViewer();
+        else if (e.getSource() == viewButton) new ATMsViewer(getTitle());
     }
 
     private void addATM() {

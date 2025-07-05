@@ -78,7 +78,7 @@ public class EducationAdmin extends JFrame implements ActionListener {
         } else if (e.getSource() == deleteButton) {
             deleteInstitution();
         } else if (e.getSource() == viewButton) {
-            new EducationViewer();
+            new EducationViewer(getTitle());
         }
     }
 
