@@ -50,43 +50,43 @@ CityInfo is a Java desktop application designed to help city newcomers, tourists
 
 Example Guide : 📁 Project Structure – CityInfo
 
-CityInfo/
-│
-├── lib/
-│   └── mysql-connector-j-8.0.33.jar         # JDBC Driver
-│
+CityInfo/  
+│  
+├── lib/  
+│   └── mysql-connector-j-8.0.33.jar         # JDBC Driver  
+│  
 ├── db/
-│   └── DBConnection.java                    # JDBC connection logic
+│   └── DBConnection.java                    # JDBC connection logic  
+│   
+├── auth/  
+│   ├── Register.java                        # User registration with role selection  
+│   └── Login.java                           # Login logic (Admin/User routing)  
+│  
+├── dashboard/  
+│   ├── AdminDashboard.java                  # Dashboard for admin role  
+│   └── UserDashboard.java                   # Dashboard for user role  
+│   
+├── modules/  
+│   ├── HotelsAdmin.java                     # Admin management for hotels  
+│   ├── HotelsViewer.java                    # User view for hotels  
+│   ├── EducationAdmin.java                  # Admin management for education  
+│   ├── EducationViewer.java                 # User view for education  
+│   ├── HostelsAdmin.java                    # Admin management for hostels  
+│   ├── HostelsViewer.java                   # User view for hostels  
+│   ├── ATMsAdmin.java                       # Admin management for ATMs  
+│   ├── ATMsViewer.java                      # User view for ATMs  
+│   ├── RestaurantsAdmin.java                # Admin management for restaurants  
+│   ├── RestaurantsViewer.java               # User view for restaurants  
+│   ├── HospitalsAdmin.java                  # Admin management for hospitals  
+│   └── HospitalsViewer.java                 # User view for hospitals  
+│  
+├── ui/  
+│   └── WelcomePage.java                     # Initial entry screen with “Enter” button  
 │
-├── auth/
-│   ├── Register.java                        # User registration with role selection
-│   └── Login.java                           # Login logic (Admin/User routing)
-│
-├── dashboard/
-│   ├── AdminDashboard.java                  # Dashboard for admin role
-│   └── UserDashboard.java                   # Dashboard for user role
-│
-├── modules/
-│   ├── HotelsAdmin.java                     # Admin management for hotels
-│   ├── HotelsViewer.java                    # User view for hotels
-│   ├── EducationAdmin.java                  # Admin management for education
-│   ├── EducationViewer.java                 # User view for education
-│   ├── HostelsAdmin.java                    # Admin management for hostels
-│   ├── HostelsViewer.java                   # User view for hostels
-│   ├── ATMsAdmin.java                       # Admin management for ATMs
-│   ├── ATMsViewer.java                      # User view for ATMs
-│   ├── RestaurantsAdmin.java                # Admin management for restaurants
-│   ├── RestaurantsViewer.java               # User view for restaurants
-│   ├── HospitalsAdmin.java                  # Admin management for hospitals
-│   └── HospitalsViewer.java                 # User view for hospitals
-│
-├── ui/
-│   └── WelcomePage.java                     # Initial entry screen with “Enter” button
-│
-├── resources/                               # (optional) for images, icons, future use
-│
-├── README.md                                # Project overview and usage instructions
-└── cityinfo.sql                             # SQL script to create DB and tables
+├── resources/                               # (optional) for images, icons, future use  
+│  
+├── README.md                                # Project overview and usage instructions  
+└── cityinfo.sql                             # SQL script to create DB and tables  
 
 
 
